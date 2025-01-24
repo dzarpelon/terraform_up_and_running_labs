@@ -3,6 +3,17 @@ provider "aws" {
   region = "us-east-2"
 }
 
+#create a datasource to read a remote state of the database
+data "terraform_remote_state" "db" {
+  backend = "s3"
+  config = {
+    bucket = "terraform-up-and-running-state-dzarpelon"
+    key = "stage/data-stores/mysql/terraform.tfstate"
+    region = "us-east-2"
+  }
+ 
+}
+
 # create single instance in aws
 resource "aws_launch_configuration" "example" {
   image_id      = "ami-0fb653ca2d3203ac1"
