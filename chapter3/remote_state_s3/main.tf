@@ -2,6 +2,18 @@ provider "aws" {
     region = "us-east-2"
 }
 
+#make terraform use the remote s3 bucket for the state file
+
+terraform {
+  backend "s3" {
+    bucket = "terraform-up-and-running-state-dzarpelon"
+    key = "global/s3/terraform.tfstate"
+    region = "us-east-2"
+    dynamodb_table = "terraform-up-and-running-locks-dzarpelon"
+    encrypt = true
+  }
+}
+
 # create s3 bucket for the tfstate file
 resource "aws_s3_bucket" "terraform_state" {
   #remember bucket names need to be GLOBALLY unique on AWS
